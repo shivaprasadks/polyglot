@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<navigationModel
+  ns = "http://schemas.android.com?import=com.android.tools.idea.editors.navigation.model.*">
+  <locations  
+    class = "java.util.ArrayList">
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.think.siet.CustomerActivity"/>
+      <point      
+        x = "2252"      
+        y = "64"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.think.siet.SellerLoginActivity"/>
+      <point      
+        x = "1564"      
+        y = "-104"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.think.siet.SellerActivity"/>
+      <point      
+        x = "836"      
+        y = "964"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.think.siet.activity.RegisterActivity"/>
+      <point      
+        x = "2036"      
+        y = "28"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.think.siet.MainActivity"/>
+      <point      
+        x = "156"      
+        y = "4"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.think.siet.activity.MainActivity"/>
+      <point      
+        x = "-276"      
+        y = "2080"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.think.siet.CustomerLoginActivity"/>
+      <point      
+        x = "404"      
+        y = "944"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.think.siet.SellerRegActivity"/>
+      <point      
+        x = "52"      
+        y = "936"/>
+    </statePointEntry>
+  </locations>
+</navigationModel>

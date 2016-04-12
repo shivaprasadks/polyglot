@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="50dp"
+    android:background="@color/bluegrey"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.think.siet.activity.test.JsonActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!-- Spinner Element -->
+
+
+
+            <com.think.siet.activity.test.LineNumberEditText
+
+                android:id="@+id/Scode"
+                android:layout_width="match_parent"
+                android:layout_height="301dp"
+
+                android:gravity="top|left"
+                android:hint="Paste/type code here"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/white"
+                app:layoutLineNumbersOnLeft="true"
+                app:shouldLineNumbersHugLine="false" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/click"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Run It"
+                    app:bootstrapBrand="success"
+                    app:bootstrapSize="lg"
+
+                    app:roundedCorners="true"
+                    app:showOutline="false" />
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Clear"
+                    app:bootstrapBrand="primary"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+
+                    app:roundedCorners="true"
+                    app:showOutline="false" />
+
+
+            </LinearLayout>
+
+
+            <com.beardedhen.androidbootstrap.BootstrapWell
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/op"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                app:bootstrapSize="xl">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="Output"
+                        android:textSize="25sp"
+
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView"
+                        android:layout_marginTop="10dp"
+                        android:textSize="18sp"
+                        android:textStyle="normal" />
+                </RelativeLayout>
+            </com.beardedhen.androidbootstrap.BootstrapWell>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
