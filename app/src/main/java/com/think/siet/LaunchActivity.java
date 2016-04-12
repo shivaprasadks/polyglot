@@ -17,6 +17,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -328,22 +329,18 @@ public class LaunchActivity extends AppCompatActivity
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
-
+            String output = null;
+            String error = null;
             if (result != null) {
                 try {
-                    JSONObject jsonObj = new JSONObject(result);
-
-                    contacts = jsonObj.getJSONArray("raw");
-
-                    // looping through All Contacts
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject c = contacts.getJSONObject(i);
-
-                        String output = c.getString("output");
-                        String time = c.getString("time");
-                        tv.setText(output + "\n" + time);
+                    JSONObject resultObject = new JSONObject(result);
+                    if (resultObject.has("output")) {
+                        output = resultObject.getString("output");
                     }
-
+                    if (resultObject.has("raw")) {
+                        JSONObject rawObject = resultObject.getJSONObject("raw");
+                        error = rawObject.getString("stderr");
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -351,7 +348,10 @@ public class LaunchActivity extends AppCompatActivity
                 Log.e("ServiceHandler", "Couldn't get any data from the url");
             }
             op.setVisibility(View.VISIBLE);
-            tv.setText(result);
+            if (!TextUtils.isEmpty(output))
+                tv.setText(output);
+            else
+                tv.setText(error);
         }
     }
 
