@@ -11,8 +11,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.think.siet.activity.test.JsonActivity">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,25 +24,48 @@
             <!-- Spinner Element -->
 
 
-
-            <com.think.siet.activity.test.LineNumberEditText
-
-                android:id="@+id/Scode"
+            <HorizontalScrollView
+                android:id="@+id/rlEmail"
                 android:layout_width="match_parent"
-                android:layout_height="301dp"
+                android:layout_height="match_parent"
+                android:scrollHorizontally="true">
 
-                android:gravity="top|left"
-                android:hint="Paste/type code here"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textColor="@color/white"
-                app:layoutLineNumbersOnLeft="true"
-                app:shouldLineNumbersHugLine="false" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
+                    <com.think.siet.activity.test.LineNumberEditText
+
+                        android:id="@+id/Scode"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:gravity="top|left"
+                        android:hint="Paste/type code here                                                                                                                                                                                                                      "
+                        android:paddingLeft="10dp"
+                        android:scrollHorizontally="true"
+
+                        />
+
+                </LinearLayout>
+
+
+            </HorizontalScrollView>
+
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="100dp"
+               android:layout_marginTop="5dp"
+               android:id="@+id/input_var"
+               android:padding="6dp"
+               android:gravity="top|left"
+               android:background="@color/bootstrap_brand_secondary_border"
+               android:hint="Input Values"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <com.beardedhen.androidbootstrap.BootstrapButton
                     android:id="@+id/click"
@@ -74,12 +96,12 @@
 
 
             <com.beardedhen.androidbootstrap.BootstrapWell
+                android:id="@+id/op"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/op"
-                android:visibility="invisible"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
+                android:visibility="invisible"
                 app:bootstrapSize="xl">
 
                 <RelativeLayout

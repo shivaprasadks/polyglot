@@ -1,10 +1,8 @@
 package com.think.siet;
 
 import android.app.Dialog;
-import android.support.v4.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -12,15 +10,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.SyncStateContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,14 +22,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.think.siet.activity.test.LineNumberEditText;
 
 import org.apache.http.NameValuePair;
@@ -62,13 +54,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class LaunchActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     TextView tv;
     View run_it, clr, op;
-    String s, lang, sL;
+    String s, lang, sL, in_put, filename;
+    EditText ip;
     ProgressDialog pDialog;
     private static final int REQUEST_CHOOSER = 1234;
     private static final String CODE_SAVING_FOLDER = "Polyglot";
@@ -77,13 +69,18 @@ public class LaunchActivity extends AppCompatActivity
     private LineNumberEditText eT;
 
     private View entryView;
-
+    NiftyDialogBuilder dialogBuilder;
     private EditText file_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
+
+
+        dialogBuilder = NiftyDialogBuilder.getInstance(this);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -93,6 +90,7 @@ public class LaunchActivity extends AppCompatActivity
         run_it = (View) findViewById(R.id.click);
         clr = (View) findViewById(R.id.clear);
         op = (View) findViewById(R.id.op);
+        ip = (EditText) findViewById(R.id.input_var);
         eT = (LineNumberEditText) findViewById(R.id.Scode);
 
 
@@ -106,7 +104,9 @@ public class LaunchActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 op.setVisibility(View.INVISIBLE);
+
                 tv.setText(" ");
+
 
             }
         });
@@ -116,7 +116,8 @@ public class LaunchActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 //get spinner item
-                lang = "C";
+                // lang = "C";
+                in_put = ip.getText().toString();
                 s = eT.getText().toString();
                 if (s.equals("")) {
                     Toast.makeText(LaunchActivity.this, "No Source Code Provided", Toast.LENGTH_SHORT).show();
@@ -137,7 +138,28 @@ public class LaunchActivity extends AppCompatActivity
             public void onClick(View view) {
 
 
-                saveFile(view);
+                final Dialog dialog = new Dialog(LaunchActivity.this);
+                dialog.setContentView(R.layout.activity_dialog);
+                dialog.setTitle("Title");
+
+                Button button = (Button) dialog.findViewById(R.id.dialog_ok);
+                button.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+
+                        EditText edit = (EditText) dialog.findViewById(R.id.fileName);
+                        String text = edit.getText().toString();
+
+                        dialog.dismiss();
+                        filename = text;
+                        Toast.makeText(getApplicationContext(), filename, Toast.LENGTH_SHORT).show();
+                        saveFile(v);
+                    }
+                });
+
+
+                dialog.show();
+
+                               // saveFile(view);
 
             }
         });
@@ -162,8 +184,8 @@ public class LaunchActivity extends AppCompatActivity
             file1.mkdirs();
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-        String path = file1.getAbsolutePath() + "/" + "code" + timeStamp + ".txt";
+
+        String path = file1.getAbsolutePath() + "/" + filename ;
         File file = new File(path);
         FileWriter writer = null;
         try {
@@ -254,9 +276,9 @@ public class LaunchActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
+            // Showing progress activity_dialog
             pDialog = new ProgressDialog(LaunchActivity.this);
-            pDialog.setMessage("Please wait...");
+            pDialog.setMessage("Compiling Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
 
@@ -297,6 +319,10 @@ public class LaunchActivity extends AppCompatActivity
                 nameValuePairs.add(new BasicNameValuePair("lang", val1));
                 nameValuePairs.add(new BasicNameValuePair("source", sourceC));
                 nameValuePairs.add(new BasicNameValuePair("process", "1"));
+                if (!in_put.equals("")) {
+                    nameValuePairs.add(new BasicNameValuePair("input", in_put));
+                }
+
 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -326,7 +352,7 @@ public class LaunchActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
+            // Dismiss the progress activity_dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
             String output = null;
@@ -339,7 +365,8 @@ public class LaunchActivity extends AppCompatActivity
                     }
                     if (resultObject.has("raw")) {
                         JSONObject rawObject = resultObject.getJSONObject("raw");
-                        error = rawObject.getString("stderr");
+                        error = "ERROR:\n" + rawObject.getString("cmpinfo");
+                        error = error + "\n" + rawObject.getString("stderr");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -348,10 +375,16 @@ public class LaunchActivity extends AppCompatActivity
                 Log.e("ServiceHandler", "Couldn't get any data from the url");
             }
             op.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(output))
+            if (!TextUtils.isEmpty(output)) {
                 tv.setText(output);
-            else
+                tv.setTextColor(getResources().getColor(R.color.bg_login));
+            } else {
                 tv.setText(error);
+                tv.setTextColor(getResources().getColor(R.color.red));
+
+            }
+
+
         }
     }
 

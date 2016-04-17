@@ -9,7 +9,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/siet2"
-        android:label="Online Compiler"
+        android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".FirstActivity">
