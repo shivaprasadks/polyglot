@@ -6,25 +6,28 @@ import android.os.Bundle;
 import android.view.View;
 
 public class FirstActivity extends AppCompatActivity {
-    View c,cplus,csharp,phy,java,php;
+    View c, cplus, csharp, phy, java, php, oth_lang;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
-        c =(View) findViewById(R.id.c_gcc);
-        cplus=(View)findViewById(R.id.c_plus);
-        csharp =(View) findViewById(R.id.csharp);
+        c = (View) findViewById(R.id.c_gcc);
+        cplus = (View) findViewById(R.id.c_plus);
+        csharp = (View) findViewById(R.id.csharp);
         phy = (View) findViewById(R.id.phy);
-        java =(View) findViewById(R.id.java);
+        java = (View) findViewById(R.id.java);
         php = (View) findViewById(R.id.php);
+
+        oth_lang = (View) findViewById(R.id.other_lang);
 
         //navigating to C Compiler
         c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(FirstActivity.this,LaunchActivity.class);
-                i.putExtra("LANG_TAG","C");
+                Intent i = new Intent(FirstActivity.this, LaunchActivity.class);
+                i.putExtra("LANG_TAG", "C");
                 startActivity(i);
             }
         });
@@ -33,8 +36,8 @@ public class FirstActivity extends AppCompatActivity {
         cplus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(FirstActivity.this,LaunchActivity.class);
-                i.putExtra("LANG_TAG","C++");
+                Intent i = new Intent(FirstActivity.this, LaunchActivity.class);
+                i.putExtra("LANG_TAG", "C++");
                 startActivity(i);
             }
         });
@@ -43,8 +46,8 @@ public class FirstActivity extends AppCompatActivity {
         csharp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(FirstActivity.this,LaunchActivity.class);
-                i.putExtra("LANG_TAG","C#");
+                Intent i = new Intent(FirstActivity.this, LaunchActivity.class);
+                i.putExtra("LANG_TAG", "C#");
                 startActivity(i);
             }
         });
@@ -54,7 +57,7 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(FirstActivity.this, LaunchActivity.class);
-                i.putExtra("LANG_TAG","PHY");
+                i.putExtra("LANG_TAG", "PHY");
                 startActivity(i);
             }
         });
@@ -64,7 +67,7 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(FirstActivity.this, LaunchActivity.class);
-                i.putExtra("LANG_TAG","PHP");
+                i.putExtra("LANG_TAG", "PHP");
                 startActivity(i);
             }
         });
@@ -74,11 +77,19 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(FirstActivity.this, LaunchActivity.class);
-                i.putExtra("LANG_TAG","JAVA");
+                i.putExtra("LANG_TAG", "JAVA");
                 startActivity(i);
             }
         });
 
+        oth_lang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(FirstActivity.this, OtherLangActivity.class);
+                i.putExtra("LANG_TAG", "All");
+                startActivity(i);
+            }
+        });
 
     }
 

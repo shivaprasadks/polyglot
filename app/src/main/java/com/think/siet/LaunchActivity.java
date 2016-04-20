@@ -140,7 +140,8 @@ public class LaunchActivity extends AppCompatActivity
 
                 final Dialog dialog = new Dialog(LaunchActivity.this);
                 dialog.setContentView(R.layout.activity_dialog);
-                dialog.setTitle("Title");
+                dialog.setTitle("Save file as");
+
 
                 Button button = (Button) dialog.findViewById(R.id.dialog_ok);
                 button.setOnClickListener(new View.OnClickListener() {
@@ -156,10 +157,20 @@ public class LaunchActivity extends AppCompatActivity
                     }
                 });
 
+                Button btn_cancel = (Button) dialog.findViewById(R.id.dialog_cancel);
+                btn_cancel.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+
+
+
+                        dialog.dismiss();
+
+                    }
+                });
 
                 dialog.show();
 
-                               // saveFile(view);
+                // saveFile(view);
 
             }
         });
@@ -185,7 +196,7 @@ public class LaunchActivity extends AppCompatActivity
         }
 
 
-        String path = file1.getAbsolutePath() + "/" + filename ;
+        String path = file1.getAbsolutePath() + "/" + filename;
         File file = new File(path);
         FileWriter writer = null;
         try {
@@ -220,7 +231,40 @@ public class LaunchActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Context con = getApplication();
+            dialogBuilder
+                    .withTitle("Wanna Exit ?")                                  //.withTitle(null)  no title
+                    .withTitleColor("#FFFFFF")                                  //def
+                    .withDividerColor("#11000000")                              //def
+                    .withMessage("Make sure you save the file before exiting")                     //.withMessage(null)  no Msg
+                    .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
+                    .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)
+                    .withIcon(getResources().getDrawable(R.drawable.c))
+                    .withDuration(400)                                          //def
+                    .withEffect(Effectstype.Fliph)                                         //def Effectstype.Slidetop
+                    .withButton1Text("OK")                                      //def gone
+                    .withButton2Text("EXIT")                                  //def gone
+                    .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
+                    .setCustomView(R.layout.exit_dialog, con)         //.setCustomView(View or ResId,context)
+                    .setButton1Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Toast.makeText(v.getContext(), "i'm btn1", Toast.LENGTH_SHORT).show();
+
+                            dialogBuilder.onBackPressed();
+                        }
+                    })
+                    .setButton2Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Toast.makeText(v.getContext(),"i'm btn2",Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(LaunchActivity.this, FirstActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    })
+                    .show();
+          //  super.onBackPressed();
         }
     }
 
@@ -458,4 +502,6 @@ public class LaunchActivity extends AppCompatActivity
 
         return null;
     }
+
+
 }
