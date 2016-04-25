@@ -21,16 +21,19 @@
         <activity
             android:name=".LaunchActivity"
             android:label="@string/title_activity_launch"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OtherLangActivity"
             android:label="@string/title_activity_other_lang"
+            android:screenOrientation="portrait"
             android:parentActivityName=".FirstActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.think.siet.FirstActivity" />
         </activity>
+        <activity android:name=".AboutUsActivity"></activity>
     </application>
 
 </manifest>

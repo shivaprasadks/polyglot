@@ -68,7 +68,6 @@ public class LaunchActivity extends AppCompatActivity
     JSONArray contacts = null;
     private LineNumberEditText eT;
 
-    private View entryView;
     NiftyDialogBuilder dialogBuilder;
     private EditText file_name;
 
@@ -153,6 +152,7 @@ public class LaunchActivity extends AppCompatActivity
                         dialog.dismiss();
                         filename = text;
                         Toast.makeText(getApplicationContext(), filename, Toast.LENGTH_SHORT).show();
+                        //caaling savefile function
                         saveFile(v);
                     }
                 });
@@ -160,7 +160,6 @@ public class LaunchActivity extends AppCompatActivity
                 Button btn_cancel = (Button) dialog.findViewById(R.id.dialog_cancel);
                 btn_cancel.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-
 
 
                         dialog.dismiss();
@@ -264,7 +263,7 @@ public class LaunchActivity extends AppCompatActivity
                         }
                     })
                     .show();
-          //  super.onBackPressed();
+            //  super.onBackPressed();
         }
     }
 
@@ -306,6 +305,11 @@ public class LaunchActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
 
+        } else if (id == R.id.nav_abtus) {
+            // navigate to about us
+            Intent i = new Intent(LaunchActivity.this, AboutUsActivity.class);
+            startActivity(i);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -332,7 +336,7 @@ public class LaunchActivity extends AppCompatActivity
         protected String doInBackground(String... params) {
             // Create a new HttpClient and Post Header
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://mosambitech.com/testapp/ideone/process.php");
+            HttpPost httppost = new HttpPost("http://www.enggproject.in/compiler/process.php");
 
 
             //This is the data to send

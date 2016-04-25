@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bootstrap_edittext_disabled"
+
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="About us:"
+                    android:textColor="@color/input_login"
+                    android:textSize="35dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/desc"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView3"
+                    android:layout_marginBottom="20dp"
+                    android:textStyle="bold"
+                    android:text="\t This application is all about the compiling of several programming Language’s source code online in your android smart phones. \n\n #1 Application to Learn 30+ Programming languages such as Python, JAVA, VB.NET, C, C++, C# (C Sharp), JavaScript, PHP, Ruby, R Programming, CSS programming and much more!"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/dev"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/desc"
+                    android:layout_marginBottom="8dp"
+                    android:text="Developed By:"
+                    android:textSize="26dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/dev"
+                    android:layout_marginBottom="10dp"
+                    android:text=" Vinutha A P[1SV12CS095] \n Rashmi M C[1SV13CS403]\n UG students\n SIET , Tumakuru."
+
+                    android:textColor="@color/bg_register"
+                    android:textSize="21dp" />
+
+
+                <TextView
+                    android:id="@+id/guidedby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView5"
+                    android:layout_marginBottom="8dp"
+                    android:text="Guided By:"
+                    android:textSize="26dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/guidedby"
+                    android:text="Renukaradhya P.C"
+                    android:textSize="21dp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/textView4"
+                    android:layout_gravity="right"
+                    android:layout_toEndOf="@+id/textView4"
+                    android:layout_toRightOf="@+id/textView4"
+                    android:text="B.E.,M.Tech.,MISTE.,"
+                    android:textSize="12dp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentTop="true"
+                    android:text="Assistant professor, SIET , Tumakuru."
+                    android:textSize="21dp" />
+
+
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
