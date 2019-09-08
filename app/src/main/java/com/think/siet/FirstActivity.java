@@ -82,14 +82,14 @@ public class FirstActivity extends AppCompatActivity {
             }
         });
 
-        oth_lang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(FirstActivity.this, OtherLangActivity.class);
-                i.putExtra("LANG_TAG", "All");
-                startActivity(i);
-            }
-        });
+//        oth_lang.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(FirstActivity.this, OtherLangActivity.class);
+//                i.putExtra("LANG_TAG", "All");
+//                startActivity(i);
+//            }
+//        });
 
     }
 
