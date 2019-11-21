@@ -230,39 +230,39 @@ public class LaunchActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Context con = getApplication();
-            dialogBuilder
-                    .withTitle("Wanna Exit ?")                                  //.withTitle(null)  no title
-                    .withTitleColor("#FFFFFF")                                  //def
-                    .withDividerColor("#11000000")                              //def
-                    .withMessage("Make sure you save the file before exiting")                     //.withMessage(null)  no Msg
-                    .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
-                    .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)
-                    .withIcon(getResources().getDrawable(R.drawable.c))
-                    .withDuration(400)                                          //def
-                    .withEffect(Effectstype.Fliph)                                         //def Effectstype.Slidetop
-                    .withButton1Text("OK")                                      //def gone
-                    .withButton2Text("EXIT")                                  //def gone
-                    .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
-                    .setCustomView(R.layout.exit_dialog, con)         //.setCustomView(View or ResId,context)
-                    .setButton1Click(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // Toast.makeText(v.getContext(), "i'm btn1", Toast.LENGTH_SHORT).show();
-
-                            dialogBuilder.onBackPressed();
-                        }
-                    })
-                    .setButton2Click(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // Toast.makeText(v.getContext(),"i'm btn2",Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(LaunchActivity.this, FirstActivity.class);
-                            startActivity(i);
-                            finish();
-                        }
-                    })
-                    .show();
+//            Context con = getApplication();
+//            dialogBuilder
+//                    .withTitle("Wanna Exit ?")                                  //.withTitle(null)  no title
+//                    .withTitleColor("#FFFFFF")                                  //def
+//                    .withDividerColor("#11000000")                              //def
+//                    .withMessage("Make sure you save the file before exiting")                     //.withMessage(null)  no Msg
+//                    .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
+//                    .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)
+//                    .withIcon(getResources().getDrawable(R.drawable.c))
+//                    .withDuration(400)                                          //def
+//                    .withEffect(Effectstype.Fliph)                                         //def Effectstype.Slidetop
+//                    .withButton1Text("OK")                                      //def gone
+//                    .withButton2Text("EXIT")                                  //def gone
+//                    .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
+//                    .setCustomView(R.layout.exit_dialog, con)         //.setCustomView(View or ResId,context)
+//                    .setButton1Click(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            // Toast.makeText(v.getContext(), "i'm btn1", Toast.LENGTH_SHORT).show();
+//
+//                            dialogBuilder.onBackPressed();
+//                        }
+//                    })
+//                    .setButton2Click(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            // Toast.makeText(v.getContext(),"i'm btn2",Toast.LENGTH_SHORT).show();
+//                            Intent i = new Intent(LaunchActivity.this, FirstActivity.class);
+//                            startActivity(i);
+//                            finish();
+//                        }
+//                    })
+//                    .show();
             //  super.onBackPressed();
         }
     }
