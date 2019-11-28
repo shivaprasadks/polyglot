@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.think.siet"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -29,6 +29,8 @@ dependencies {
     implementation 'com.beardedhen:androidbootstrap:2.1.0'
     implementation 'com.android.support:design:23.2.0'
     implementation 'com.github.sd6352051:NiftyDialogEffects:1.0.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
 }
 
 

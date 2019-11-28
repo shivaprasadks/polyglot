@@ -27,19 +27,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+import com.google.gson.Gson;
 import com.think.siet.activity.test.LineNumberEditText;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,17 +49,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LaunchActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     TextView tv;
     View run_it, clr, op;
-    String s, lang, sL, in_put, filename;
+    String sourceCode, sL, in_put, filename;
     EditText ip;
     ProgressDialog pDialog;
     private static final int REQUEST_CHOOSER = 1234;
@@ -67,6 +67,12 @@ public class LaunchActivity extends AppCompatActivity
     // contacts JSONArray
     JSONArray contacts = null;
     private LineNumberEditText eT;
+    ProgressDialog progressDoalog;
+
+    private RequestQueue mRequestQueue;
+    private StringRequest mStringRequest;
+    private String url = "http://166.62.10.140/~pvppmzjvvhlg/polyglot/getData.php";
+
 
     NiftyDialogBuilder dialogBuilder;
     private EditText file_name;
@@ -116,63 +122,23 @@ public class LaunchActivity extends AppCompatActivity
             public void onClick(View v) {
                 //get spinner item
                 // lang = "C";
+                Intent in = getIntent();
+                sL = in.getStringExtra("LANG_TAG");
                 in_put = ip.getText().toString();
-                s = eT.getText().toString();
-                if (s.equals("")) {
+                sourceCode = eT.getText().toString();
+                if (sourceCode.equals("")) {
                     Toast.makeText(LaunchActivity.this, "No Source Code Provided", Toast.LENGTH_SHORT).show();
                 } else {
-                    //  Toast.makeText(LaunchActivity.this, "not getting", Toast.LENGTH_SHORT).show();
-                    new JsonAsync().execute();
+
+                    //API call with selected language type and source code
+                    sendAndRequestResponse(sourceCode, sL, in_put);
                 }
-                // new JsonAsync().execute();
-
 
             }
         });
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-
-                final Dialog dialog = new Dialog(LaunchActivity.this);
-                dialog.setContentView(R.layout.activity_dialog);
-                dialog.setTitle("Save file as");
-
-
-                Button button = (Button) dialog.findViewById(R.id.dialog_ok);
-                button.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-
-                        EditText edit = (EditText) dialog.findViewById(R.id.fileName);
-                        String text = edit.getText().toString();
-
-                        dialog.dismiss();
-                        filename = text;
-                        Toast.makeText(getApplicationContext(), filename, Toast.LENGTH_SHORT).show();
-                        //caaling savefile function
-                        saveFile(v);
-                    }
-                });
-
-                Button btn_cancel = (Button) dialog.findViewById(R.id.dialog_cancel);
-                btn_cancel.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-
-
-                        dialog.dismiss();
-
-                    }
-                });
-
-                dialog.show();
-
-                // saveFile(view);
-
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -185,42 +151,91 @@ public class LaunchActivity extends AppCompatActivity
 
     }
 
-    private void saveFile(View view) {
+    private void sendAndRequestResponse(final String inputSourceCode, final String langSelected, String inputParams) {
 
-        String filepath = Environment.getExternalStorageDirectory().getPath();
-        File file1 = new File(filepath, CODE_SAVING_FOLDER);
+        progressDoalog = new ProgressDialog(LaunchActivity.this);
+        progressDoalog.setMessage("Compiling....");
+        progressDoalog.show();
 
-        if (!file1.exists()) {
-            file1.mkdirs();
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(this);
+
+        ///////////////////////////
+
+        JSONObject jsonBodyObj = new JSONObject();
+
+        try {
+            jsonBodyObj.put("lang", getLanguageCode(langSelected));
+            jsonBodyObj.put("source", inputSourceCode);
+
+            if(inputParams != "") jsonBodyObj.put("input", inputParams);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
+        final String requestBody = jsonBodyObj.toString();
 
-        String path = file1.getAbsolutePath() + "/" + filename;
-        File file = new File(path);
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(file);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.i("Response", String.valueOf(response));
+                if (progressDoalog.isShowing()) progressDoalog.dismiss();
 
-            /** Saving the contents to the file*/
-            writer.write(eT.getText().toString());
+//                Toast.makeText(LaunchActivity.this, String.valueOf(response), Toast.LENGTH_SHORT).show();
+                processResult(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+                if (progressDoalog.isShowing()) progressDoalog.dismiss();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
 
-            /** Closing the writer object */
-            writer.close();
 
-            /** Getting sharedpreferences object to store the path of last saved file */
-            SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+            @Override
+            public byte[] getBody() {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
 
-            /** Setting the last saved file's path in the shared preference */
-            editor.putString("fpath", file.getPath());
 
-            /** Save the path to the shared preference */
-            editor.commit();
+        };
+
+        mRequestQueue.add(jsonObjectRequest);
 
 
-            Snackbar.make(view, "Successfully saved at " + path, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+
+
+
+    public void processResult(JSONObject response){
+        String output = "";
+        if (response.has("output")) {
+            try{
+                output = response.getString("output");
+            }
+            catch(Exception e){ Log.i("PARSING_FAIL", e.toString());}
+
+            op.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(output)) {
+                tv.setText(output);
+                tv.setTextColor(getResources().getColor(R.color.bg_login));
+            }
         }
     }
 
@@ -230,41 +245,9 @@ public class LaunchActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-//            Context con = getApplication();
-//            dialogBuilder
-//                    .withTitle("Wanna Exit ?")                                  //.withTitle(null)  no title
-//                    .withTitleColor("#FFFFFF")                                  //def
-//                    .withDividerColor("#11000000")                              //def
-//                    .withMessage("Make sure you save the file before exiting")                     //.withMessage(null)  no Msg
-//                    .withMessageColor("#FFFFFFFF")                              //def  | withMessageColor(int resid)
-//                    .withDialogColor("#FFE74C3C")                               //def  | withDialogColor(int resid)
-//                    .withIcon(getResources().getDrawable(R.drawable.c))
-//                    .withDuration(400)                                          //def
-//                    .withEffect(Effectstype.Fliph)                                         //def Effectstype.Slidetop
-//                    .withButton1Text("OK")                                      //def gone
-//                    .withButton2Text("EXIT")                                  //def gone
-//                    .isCancelableOnTouchOutside(true)                           //def    | isCancelable(true)
-//                    .setCustomView(R.layout.exit_dialog, con)         //.setCustomView(View or ResId,context)
-//                    .setButton1Click(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            // Toast.makeText(v.getContext(), "i'm btn1", Toast.LENGTH_SHORT).show();
-//
-//                            dialogBuilder.onBackPressed();
-//                        }
-//                    })
-//                    .setButton2Click(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            // Toast.makeText(v.getContext(),"i'm btn2",Toast.LENGTH_SHORT).show();
-//                            Intent i = new Intent(LaunchActivity.this, FirstActivity.class);
-//                            startActivity(i);
-//                            finish();
-//                        }
-//                    })
-//                    .show();
-            //  super.onBackPressed();
+            super.onBackPressed();
         }
+
     }
 
 
@@ -318,124 +301,25 @@ public class LaunchActivity extends AppCompatActivity
     }
 
 
-    //communication with server
-    public class JsonAsync extends AsyncTask<String, String, String> {
+    protected String getLanguageCode(String lang) {
+        switch (lang) {
+            case "PHP":
+                return "php";
+            case "C":
+                return "c";
+            case "JAVA":
+                return "java";
+            case "C++":
+                return "cpp";
+            case "C#":
+                return "csharp";
+            case "PHY":
+                return "python2";
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress activity_dialog
-            pDialog = new ProgressDialog(LaunchActivity.this);
-            pDialog.setMessage("Compiling Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            // Create a new HttpClient and Post Header
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://www.enggproject.in/compiler/process.php");
-
-
-            //This is the data to send
-            String val1 = "11"; //any data to send
-            if (sL.equals("C")) {
-                val1 = "11";
-            } else if (sL.equals("C++")) {
-                val1 = "1";
-            } else if (sL.equals("C#")) {
-                val1 = "27";
-            } else if (sL.equals("PHP")) {
-                val1 = "29";
-            } else if (sL.equals("PHY")) {
-                val1 = "4";
-            } else if (sL.equals("JAVA")) {
-                val1 = "10";
-            } else if (sL.equals("SQL")) {
-                val1 = "40";
-            } else if (sL.equals("JavaScript")) {
-                val1 = "35";
-            }
-
-            String sourceC = s;
-
-            try {
-// Add your data
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("lang", val1));
-                nameValuePairs.add(new BasicNameValuePair("source", sourceC));
-                nameValuePairs.add(new BasicNameValuePair("process", "1"));
-                if (!in_put.equals("")) {
-                    nameValuePairs.add(new BasicNameValuePair("input", in_put));
-                }
-
-
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                // Execute HTTP Post Request
-
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                String response = httpclient.execute(httppost, responseHandler);
-
-                //This is the response from a php application
-
-
-                Log.d("Response: ", "> " + response);
-
-                return response;
-
-
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-                // TODO Auto-generated catch block
-            } catch (IOException e) {
-                e.printStackTrace();
-// TODO Auto-generated catch block
-            }
-            return "No Data";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            // Dismiss the progress activity_dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-            String output = null;
-            String error = null;
-            if (result != null) {
-                try {
-                    JSONObject resultObject = new JSONObject(result);
-                    if (resultObject.has("output")) {
-                        output = resultObject.getString("output");
-                    }
-                    if (resultObject.has("raw")) {
-                        JSONObject rawObject = resultObject.getJSONObject("raw");
-                        error = "ERROR:\n" + rawObject.getString("cmpinfo");
-                        error = error + "\n" + rawObject.getString("stderr");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the url");
-            }
-            op.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(output)) {
-                tv.setText(output);
-                tv.setTextColor(getResources().getColor(R.color.bg_login));
-            } else {
-                tv.setText(error);
-                tv.setTextColor(getResources().getColor(R.color.red));
-
-            }
-
-
+            default:
+                return lang;
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
