@@ -39,10 +39,11 @@
 
                         android:id="@+id/Scode"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
+                        android:layout_height="500dp"
                         android:gravity="top|left"
                         android:hint="Paste/type code here                                                                                                                                                                                                                      "
                         android:paddingLeft="10dp"
+                        android:textColorHighlight="@color/bluegrey"
                         android:scrollHorizontally="true"
 
                         />
